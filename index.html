@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Australian Road Safety Enforcement Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Australian Road Safety Enforcement Dashboard</h1>
+            <p class="subtitle">Exploring Police Enforcement Data (2023-2024)</p>
+        </header>
+
+        <!-- Year Filter Controls -->
+        <div class="controls">
+            <button class="btn active" id="btn-all" onclick="filterYear('all')">All Years</button>
+            <button class="btn" id="btn-2023" onclick="filterYear('2023')">2023</button>
+            <button class="btn" id="btn-2024" onclick="filterYear('2024')">2024</button>
+        </div>
+
+        <!-- Visualizations Grid -->
+        <div class="viz-grid">
+            <!-- Map Visualization -->
+            <div class="viz-container full-width">
+                <h2 class="viz-title">Total Fines by State/Territory</h2>
+                <div id="map-viz"></div>
+            </div>
+
+            <!-- Breath Test Bar Chart -->
+            <div class="viz-container">
+                <h2 class="viz-title">Enforcement Actions by State</h2>
+                <div id="breath-test-viz"></div>
+                <div class="legend" id="breath-legend"></div>
+            </div>
+
+            <!-- Age Group Chart -->
+            <div class="viz-container">
+                <h2 class="viz-title">Fines by Age Group</h2>
+                <div id="age-viz"></div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Data Source: Bureau of Infrastructure and Transport Research Economics (BITRE)</p>
+            <p>COS30045 Data Visualisation Project | 2025 S1</p>
+        </footer>
+    </div>
+
+    <!-- Tooltip -->
+    <div class="tooltip" id="tooltip"></div>
+
+    <!-- JavaScript -->
+    <script src="main.js"></script>
+</body>
+</html>

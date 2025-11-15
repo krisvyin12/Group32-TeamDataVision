@@ -7,42 +7,92 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 </head>
+
 <body>
     <div class="container">
+
+        <!-- ================= HEADER ================= -->
         <header>
             <h1>Australian Road Safety Enforcement Dashboard</h1>
-            <p class="subtitle">Exploring Police Enforcement Data (2023-2024)</p>
+            <p class="subtitle">Exploring Police Enforcement Data (2023–2024)</p>
         </header>
 
-        <!-- Year Filter Controls -->
+        <!-- ================= YEAR FILTER ================= -->
         <div class="controls">
             <button class="btn active" id="btn-all" onclick="filterYear('all')">All Years</button>
             <button class="btn" id="btn-2023" onclick="filterYear('2023')">2023</button>
             <button class="btn" id="btn-2024" onclick="filterYear('2024')">2024</button>
         </div>
 
-        <!-- Visualizations Grid -->
+        <!-- ================= VISUALISATIONS ================= -->
         <div class="viz-grid">
-            <!-- Map Visualization -->
+
+            <!-- ========== MAP ========== -->
             <div class="viz-container full-width">
                 <h2 class="viz-title">Total Fines by State/Territory</h2>
-                <div id="map-viz"></div>
+                <div id="map-viz" aria-label="Choropleth map showing fines by state"></div>
+
+                <!-- INTERPRETATION BOX -->
+                <div class="interpretation-box">
+                    <h3>Interpretation</h3>
+                    <p>
+                        This map shows the distribution of total fines across Australian states and territories.
+                        Darker regions represent higher fine totals. States like NSW and QLD show significantly higher
+                        fine volumes, indicating higher population density and more active enforcement.
+                        Smaller regions such as TAS and ACT show lower totals due to population differences.
+                    </p>
+                </div>
             </div>
 
-            <!-- Breath Test Bar Chart -->
+            <!-- ========== BREATH TEST BAR CHART ========== -->
             <div class="viz-container">
                 <h2 class="viz-title">Enforcement Actions by State</h2>
-                <div id="breath-test-viz"></div>
+                <div id="breath-test-viz" aria-label="Grouped bar chart of fines, charges and arrests"></div>
                 <div class="legend" id="breath-legend"></div>
+
+                <!-- INTERPRETATION BOX -->
+                <div class="interpretation-box">
+                    <h3>Interpretation</h3>
+                    <p>
+                        This chart compares fines, charges, and arrests by state. Fines are consistently the most
+                        common enforcement action, while arrests are significantly lower in all states. NSW and VIC
+                        show the highest number of actions, aligning with larger populations. Filtering by year
+                        provides insights into enforcement changes over time.
+                    </p>
+                </div>
             </div>
 
-            <!-- Age Group Chart -->
+            <!-- ========== AGE GROUP CHART ========== -->
             <div class="viz-container">
                 <h2 class="viz-title">Fines by Age Group</h2>
-                <div id="age-viz"></div>
+                <div id="age-viz" aria-label="Horizontal bar chart showing fines by age group"></div>
+
+                <!-- INTERPRETATION BOX -->
+                <div class="interpretation-box">
+                    <h3>Interpretation</h3>
+                    <p>
+                        This chart displays which age groups receive the most fines. The 26–35 and 36–45 brackets 
+                        typically show the highest totals—corresponding with the most active driving age range. 
+                        Younger groups (under 20) and older groups (60+) tend to have significantly fewer fines.
+                    </p>
+                </div>
             </div>
         </div>
 
+        <!-- ================= FINAL INSIGHTS SUMMARY ================= -->
+        <section class="interpretation-box full-width">
+            <h2>Summary Insights</h2>
+            <p>
+                Overall, the visualisations reveal three key trends:  
+                <strong>(1)</strong> Enforcement activity is highest in larger states such as NSW, VIC, and QLD.  
+                <strong>(2)</strong> Fines make up the majority of enforcement actions, far exceeding charges and arrests.  
+                <strong>(3)</strong> The most fined age groups are 26–45, showing that middle-aged drivers are most involved 
+                in enforceable road offences.  
+                Together, these insights help identify priority regions and demographic groups for future road safety programs.
+            </p>
+        </section>
+
+        <!-- ================= FOOTER ================= -->
         <footer>
             <p>Data Source: Bureau of Infrastructure and Transport Research Economics (BITRE)</p>
             <p>COS30045 Data Visualisation Project | 2025 S1</p>
@@ -54,5 +104,6 @@
 
     <!-- JavaScript -->
     <script src="main.js"></script>
+
 </body>
 </html>

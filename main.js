@@ -1,42 +1,7 @@
-// Data
-const breathTestData = [
-    {YEAR: 2023, STATE: "ACT", TOTAL_FINES: 0, TOTAL_CHARGES: 742, TOTAL_ARRESTS: 68},
-    {YEAR: 2023, STATE: "NSW", TOTAL_FINES: 4098, TOTAL_CHARGES: 9873, TOTAL_ARRESTS: 0},
-    {YEAR: 2023, STATE: "NT", TOTAL_FINES: 0, TOTAL_CHARGES: 1155, TOTAL_ARRESTS: 449},
-    {YEAR: 2023, STATE: "QLD", TOTAL_FINES: 0, TOTAL_CHARGES: 0, TOTAL_ARRESTS: 0},
-    {YEAR: 2023, STATE: "SA", TOTAL_FINES: 1990, TOTAL_CHARGES: 2943, TOTAL_ARRESTS: 251},
-    {YEAR: 2023, STATE: "VIC", TOTAL_FINES: 0, TOTAL_CHARGES: 0, TOTAL_ARRESTS: 0},
-    {YEAR: 2023, STATE: "WA", TOTAL_FINES: 2150, TOTAL_CHARGES: 6149, TOTAL_ARRESTS: 155},
-    {YEAR: 2024, STATE: "ACT", TOTAL_FINES: 0, TOTAL_CHARGES: 644, TOTAL_ARRESTS: 55},
-    {YEAR: 2024, STATE: "NSW", TOTAL_FINES: 3631, TOTAL_CHARGES: 9364, TOTAL_ARRESTS: 0},
-    {YEAR: 2024, STATE: "NT", TOTAL_FINES: 231, TOTAL_CHARGES: 1355, TOTAL_ARRESTS: 489},
-    {YEAR: 2024, STATE: "QLD", TOTAL_FINES: 0, TOTAL_CHARGES: 0, TOTAL_ARRESTS: 0},
-    {YEAR: 2024, STATE: "SA", TOTAL_FINES: 1333, TOTAL_CHARGES: 2852, TOTAL_ARRESTS: 249},
-    {YEAR: 2024, STATE: "VIC", TOTAL_FINES: 0, TOTAL_CHARGES: 0, TOTAL_ARRESTS: 0},
-    {YEAR: 2024, STATE: "WA", TOTAL_FINES: 1920, TOTAL_CHARGES: 8348, TOTAL_ARRESTS: 432}
-];
-
-const finesAgeData = [
-    {AGE_GROUP: "0-16", TOTAL_FINES: 23975},
-    {AGE_GROUP: "17-25", TOTAL_FINES: 708442},
-    {AGE_GROUP: "26-39", TOTAL_FINES: 1679922},
-    {AGE_GROUP: "40-64", TOTAL_FINES: 2366712},
-    {AGE_GROUP: "65 and over", TOTAL_FINES: 640025},
-    {AGE_GROUP: "Unknown", TOTAL_FINES: 3204535}
-];
-
-const finesStatesData = [
-    {STATE: "ACT", TOTAL_FINES: 168913},
-    {STATE: "NSW", TOTAL_FINES: 2273624},
-    {STATE: "NT", TOTAL_FINES: 94380},
-    {STATE: "QLD", TOTAL_FINES: 1941031},
-    {STATE: "SA", TOTAL_FINES: 417640},
-    {STATE: "TAS", TOTAL_FINES: 151938},
-    {STATE: "VIC", TOTAL_FINES: 2280698},
-    {STATE: "WA", TOTAL_FINES: 1295387}
-];
-
 // Global variables
+let breathTestData = [];
+let finesAgeData = [];
+let finesStatesData = [];
 let currentYear = 'all';
 const tooltip = d3.select("#tooltip");
 
@@ -46,6 +11,64 @@ const colors = {
     charges: "#f6ad55",
     arrests: "#fc8181"
 };
+
+// Load all CSV files
+async function loadData() {
+    try {
+        // Load all three CSV files
+        breathTestData = await d3.csv("data/breath_test.csv", d => {
+            // Handle different possible column names
+            return {
+                YEAR: +d.YEAR || +d.Year || +d.year,
+                STATE: d.STATE || d.State || d.state,
+                TOTAL_FINES: +(d.TOTAL_FINES || d["TOTAL FINES"] || d["Total Fines"] || 0),
+                TOTAL_CHARGES: +(d.TOTAL_CHARGES || d["TOTAL CHARGES"] || d["Total Charges"] || 0),
+                TOTAL_ARRESTS: +(d.TOTAL_ARRESTS || d["TOTAL ARRESTS"] || d["Total Arrests"] || 0)
+            };
+        });
+
+        finesAgeData = await d3.csv("data/fines_age.csv", d => {
+            // Handle different possible column names
+            return {
+                AGE_GROUP: d.AGE_GROUP || d["Age Group"] || d.age_group,
+                TOTAL_FINES: +(d.TOTAL_FINES || d["TOTAL FINES"] || d["Total Fines"] || 0)
+            };
+        });
+
+        finesStatesData = await d3.csv("data/fines_states.csv", d => {
+            // Handle different possible column names
+            return {
+                STATE: d.STATE || d.State || d.state,
+                TOTAL_FINES: +(d.TOTAL_FINES || d["TOTAL FINES"] || d["Total Fines"] || 0)
+            };
+        });
+
+        console.log("Data loaded successfully!");
+        console.log("Breath Test Data:", breathTestData);
+        console.log("Breath Test Count:", breathTestData.length);
+        console.log("Fines Age Data:", finesAgeData);
+        console.log("Fines Age Count:", finesAgeData.length);
+        console.log("Fines States Data:", finesStatesData);
+        console.log("Fines States Count:", finesStatesData.length);
+
+        // Check if data is actually loaded
+        if (breathTestData.length === 0) {
+            console.error("breath_test.csv has no data!");
+        }
+        if (finesAgeData.length === 0) {
+            console.error("fines_age.csv has no data!");
+        }
+        if (finesStatesData.length === 0) {
+            console.error("fines_states.csv has no data!");
+        }
+
+        // Initialize visualizations after data is loaded
+        init();
+    } catch (error) {
+        console.error("Error loading data:", error);
+        alert("Error loading CSV files. Please check the file paths and console for details.");
+    }
+}
 
 // Initialize all visualizations
 function init() {
@@ -381,5 +404,5 @@ function createAgeChart() {
         .attr("width", d => x(d.TOTAL_FINES));
 }
 
-// Initialize on page load
-window.onload = init;
+// Load data and initialize when page loads
+window.onload = loadData;
